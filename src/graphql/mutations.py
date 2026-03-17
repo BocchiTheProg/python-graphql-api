@@ -6,7 +6,7 @@ from src.models.game import Game
 from src.models.developercompany import DeveloperCompany
 from src.graphql.types import GameType
 from src.graphql.types import DeveloperType
-
+from strawberry.exceptions import GraphQLError
 
 @strawberry.type
 class Mutation:
@@ -47,7 +47,7 @@ class Mutation:
         game = next((g for g in games if g.id == id), None)
 
         if not game:
-            return None
+            raise GraphQLError(f"Game with id {id} not found")
 
         if title:
             game.title = title
@@ -63,7 +63,7 @@ class Mutation:
         game = next((g for g in games if g.id == id), None)
 
         if not game:
-            return False
+            raise GraphQLError(f"Game with id {id} not found")
 
         games.remove(game)
         return True
@@ -100,7 +100,7 @@ class Mutation:
         developer = next((d for d in developers if d.id == id), None)
 
         if not developer:
-            return None
+            raise GraphQLError(f"Developer with id {id} not found")
 
         if name:
             developer.name = name
@@ -116,7 +116,7 @@ class Mutation:
         developer = next((d for d in developers if d.id == id), None)
 
         if not developer:
-            return False
+            raise GraphQLError(f"Developer with id {id} not found")
 
-        games.remove(developer)
+        developers.remove(developer)
         return True

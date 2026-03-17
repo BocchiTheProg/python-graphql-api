@@ -1,7 +1,7 @@
 import strawberry
 from typing import List, Optional
 from src.storage.in_memory_db import developers, games
-
+from strawberry.exceptions import GraphQLError
 
 @strawberry.type
 class DeveloperType:
@@ -27,4 +27,4 @@ class GameType:
         dev = next((d for d in developers if d.id == self.developer_id), None)
         if dev:
             return DeveloperType(**dev.model_dump())
-        return None
+        raise GraphQLError(f"Developer with id {self.developer_id} not found")
