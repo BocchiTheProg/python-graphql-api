@@ -58,7 +58,7 @@ class Mutation:
         return GameType(**game.model_dump())
 
     @strawberry.mutation
-    def delete_game(self, id: int) -> bool:
+    def delete_game(self, id: int) -> int:
 
         game = next((g for g in games if g.id == id), None)
 
@@ -66,7 +66,7 @@ class Mutation:
             raise GraphQLError(f"Game with id {id} not found")
 
         games.remove(game)
-        return True
+        return game.id
     
     # Developer Companies Mutations
 
@@ -111,7 +111,7 @@ class Mutation:
         return DeveloperType(**developer.model_dump())
 
     @strawberry.mutation
-    def delete_developer(self, id: int) -> bool:
+    def delete_developer(self, id: int) -> int:
 
         developer = next((d for d in developers if d.id == id), None)
 
@@ -119,4 +119,4 @@ class Mutation:
             raise GraphQLError(f"Developer with id {id} not found")
 
         developers.remove(developer)
-        return True
+        return developer.id
